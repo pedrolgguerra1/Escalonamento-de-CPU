@@ -16,6 +16,5 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    printf("Arquivo carregado com sucesso: %d tarefas lidas.\n", sim.num_tasks);
     return 0;
 }

@@ -8,7 +8,7 @@ bool parse_input_file(const char *filename, SimulationData *sim) {
     }
 
     if (fscanf(fp, "%d", &sim->total_time) != 1 || sim->total_time <= 0) {
-        fprintf(stderr, "Erro: Tempo total invalido.\n");
+        fprintf(stderr, "Erro: Tempo total de simulacao invalido.\n");
         fclose(fp);
         return false;
     }
@@ -18,9 +18,27 @@ bool parse_input_file(const char *filename, SimulationData *sim) {
     int p, d, c;
 
     while (fscanf(fp, "%31s %d %d %d", name, &p, &d, &c) == 4) {
+        if (sim->num_tasks >= MAX_TASKS) {
+            fprintf(stderr, "Erro: Limite maximo de tarefas excedido.\n");
+            fclose(fp);
+            return false;
+        }
+
+        if (p <= 0 || d <= 0 || c <= 0) {
+            fprintf(stderr, "Erro: Valores de P, D e C devem ser inteiros positivos (tarefa %s).\n", name);
+            fclose(fp);
+            return false;
+        }
+
+        if (c > d || d > p) {
+            fprintf(stderr, "Erro: Violacao das restricoes C <= D <= P na tarefa %s (C=%d, D=%d, P=%d).\n",
+                    name, c, d, p);
+            fclose(fp);
+            return false;
+        }
+
         Task *t = &sim->tasks[sim->num_tasks];
-        strncpy(t->name, name, sizeof(t->name) - 1);
-        t->name[sizeof(t->name) - 1] = '\0';
+        snprintf(t->name, sizeof(t->name), "%s", name);
         t->period = p;
         t->deadline = d;
         t->burst = c;
@@ -29,5 +47,11 @@ bool parse_input_file(const char *filename, SimulationData *sim) {
     }
 
     fclose(fp);
+
+    if (sim->num_tasks == 0) {
+        fprintf(stderr, "Erro: Nenhuma tarefa valida encontrada no arquivo.\n");
+        return false;
+    }
+
     return true;
 }
