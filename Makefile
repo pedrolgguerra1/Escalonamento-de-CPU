@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99 -pedantic -O2
 TARGET = scheduler
-SRCS = main.c
+SRCS = main.c parser.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(TARGET)
@@ -13,6 +13,6 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(TARGET) *.out evidencias.log
+	rm -f $(OBJS) $(TARGET) *.out
 
 .PHONY: all clean

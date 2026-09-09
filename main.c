@@ -11,5 +11,11 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    SimulationData sim;
+    if (!parse_input_file(argv[2], &sim)) {
+        return 1;
+    }
+
+    printf("Arquivo carregado com sucesso: %d tarefas lidas.\n", sim.num_tasks);
     return 0;
 }
