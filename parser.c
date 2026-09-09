@@ -43,6 +43,13 @@ bool parse_input_file(const char *filename, SimulationData *sim) {
         t->deadline = d;
         t->burst = c;
         t->file_order = sim->num_tasks;
+        t->remaining_burst = 0;
+        t->current_deadline = 0;
+        t->next_arrival = 0;
+        t->is_active = false;
+        t->completed_executions = 0;
+        t->lost_deadlines = 0;
+        t->killed = 0;
         sim->num_tasks++;
     }
 
