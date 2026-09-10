@@ -1,0 +1,123 @@
+Wed Sep  9 22:03:55 -03 2026
+dev
+/mnt/c/Users/Guerra/Downloads/plgg/plgg
+rm -f main.o parser.o simulador.o scheduler *.out
+gcc -Wall -Wextra -std=c99 -pedantic -O2 -c main.c -o main.o
+gcc -Wall -Wextra -std=c99 -pedantic -O2 -c parser.c -o parser.o
+gcc -Wall -Wextra -std=c99 -pedantic -O2 -c simulador.c -o simulador.o
+gcc -Wall -Wextra -std=c99 -pedantic -O2 -o scheduler main.o parser.o simulador.o
+EXECUTION BY RATE
+[ATT] for 8 units
+F
+[NAV] for 12 units - H
+[ATT] for 8 units
+F
+[NAV] for 2 units
+L
+idle for 10 units
+[ATT] for 8 units
+F
+idle for 2 units
+[NAV] for 10 units - H
+[ATT] for 8 units
+F
+[NAV] for 5 units
+F
+idle for 7 units
+[ATT] for 8 units
+F
+idle for 12 units
+LOST DEADLINES
+[ATT] 0
+[NAV] 1
+COMPLETE EXECUTION
+[ATT] 5
+[NAV] 1
+KILLED
+[ATT] 0
+[NAV] 0
+EXECUTION BY EDF
+[ATT] for 8 units
+F
+[NAV] for 15 units
+F
+[ATT] for 8 units
+F
+idle for 9 units
+[ATT] for 8 units
+F
+idle for 2 units
+[NAV] for 10 units - H
+[ATT] for 8 units
+F
+[NAV] for 5 units
+F
+idle for 7 units
+[ATT] for 8 units
+F
+idle for 12 units
+LOST DEADLINES
+[ATT] 0
+[NAV] 0
+COMPLETE EXECUTION
+[ATT] 5
+[NAV] 2
+KILLED
+[ATT] 0
+[NAV] 0
+EXECUTION BY RATE
+[T1] for 10 units
+F
+[T2] for 10 units - H
+[T1] for 10 units
+F
+[T2] for 10 units - H
+[T1] for 10 units
+F
+[T2] for 5 units
+F
+idle for 5 units
+LOST DEADLINES
+[T1] 0
+[T2] 1
+COMPLETE EXECUTION
+[T1] 3
+[T2] 1
+KILLED
+[T1] 0
+[T2] 0
+EXECUTION BY EDF
+[T1] for 10 units
+F
+[T2] for 15 units
+F
+[T1] for 10 units
+F
+[T2] for 5 units - H
+[T1] for 10 units
+F
+[T2] for 10 units
+F
+LOST DEADLINES
+[T1] 0
+[T2] 0
+COMPLETE EXECUTION
+[T1] 3
+[T2] 2
+KILLED
+[T1] 0
+[T2] 0
+Erro: Falha ao abrir o arquivo 'invalido.txt'.
+Status: 1
+bfbd736 (HEAD -> main, origin/main, origin/HEAD) README
+58a4a5b corrige criterio do edf priorizando menor deadline
+160a981 implementa edf com ordenacao invertida de prioridade dinamica
+47b703d contabiliza metricas de conclusao
+7dab787 descarta rajada no instante exato do deadline com flag
+f732b82 preempcao ciclo a ciclo
+b59e95d modela variaveis
+ddfe186 valida restricoes C <= D <= P
+b7cdb4a implementando parsing
+4e0324f validacao de argumentos da linha de comando
+68b9c5f criação de arquivos iniciais
+b1e75e0 Initial commit
