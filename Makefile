@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99 -pedantic -O2
 TARGET = scheduler
-SRCS = main.c parser.c
+SRCS = main.c parser.c simulador.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(TARGET)
