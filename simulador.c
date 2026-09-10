@@ -66,6 +66,9 @@ void run_simulation(SimulationData *sim, SchedAlgo algo, const char *login) {
             sim->tasks[current_running].remaining_burst--;
         }
 
+        int next_t = t + 1;
+        bool completed = false;
+
         if (current_running != -1 && sim->tasks[current_running].remaining_burst == 0) {
             sim->tasks[current_running].completed_executions++;
             sim->tasks[current_running].is_active = false;
@@ -73,6 +76,23 @@ void run_simulation(SimulationData *sim, SchedAlgo algo, const char *login) {
             fprintf(out, "F\n");
             current_block_duration = 0;
             current_running = -1;
+            completed = true;
+        }
+
+        for (int i = 0; i < sim->num_tasks; i++) {
+            Task *task = &sim->tasks[i];
+            if (task->is_active && task->remaining_burst > 0 && next_t == task->current_deadline) {
+                task->lost_deadlines++;
+                task->is_active = false;
+                task->remaining_burst = 0;
+
+                if (current_running == i && !completed) {
+                    fprintf(out, "[%s] for %d units\n", task->name, current_block_duration);
+                    fprintf(out, "L\n");
+                    current_block_duration = 0;
+                    current_running = -1;
+                }
+            }
         }
     }
 
