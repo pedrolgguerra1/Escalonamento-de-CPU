@@ -32,7 +32,7 @@ void run_simulation(SimulationData *sim, SchedAlgo algo, const char *login) {
         exit(1);
     }
 
-    fprintf(out, "EXECUTION BY RATE\n");
+    fprintf(out, "EXECUTION BY %s\n", (algo == ALGO_RATE ? "RATE" : "EDF"));
 
     int current_running = -1;
     int current_block_duration = 0;
@@ -102,6 +102,28 @@ void run_simulation(SimulationData *sim, SchedAlgo algo, const char *login) {
         } else {
             fprintf(out, "[%s] for %d units\n", sim->tasks[current_running].name, current_block_duration);
         }
+    }
+
+    for (int i = 0; i < sim->num_tasks; i++) {
+        Task *task = &sim->tasks[i];
+        if (task->is_active && task->remaining_burst > 0) {
+            task->killed++;
+        }
+    }
+
+    fprintf(out, "LOST DEADLINES\n");
+    for (int i = 0; i < sim->num_tasks; i++) {
+        fprintf(out, "[%s] %d\n", sim->tasks[i].name, sim->tasks[i].lost_deadlines);
+    }
+
+    fprintf(out, "COMPLETE EXECUTION\n");
+    for (int i = 0; i < sim->num_tasks; i++) {
+        fprintf(out, "[%s] %d\n", sim->tasks[i].name, sim->tasks[i].completed_executions);
+    }
+
+    fprintf(out, "KILLED\n");
+    for (int i = 0; i < sim->num_tasks; i++) {
+        fprintf(out, "[%s] %d\n", sim->tasks[i].name, sim->tasks[i].killed);
     }
 
     fclose(out);
