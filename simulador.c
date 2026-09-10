@@ -29,7 +29,7 @@ static int choose_task_edf(SimulationData *sim) {
             if (best_idx == -1) {
                 best_idx = i;
             } else {
-                if (t->current_deadline > sim->tasks[best_idx].current_deadline) {
+                if (t->current_deadline < sim->tasks[best_idx].current_deadline) {
                     best_idx = i;
                 } else if (t->current_deadline == sim->tasks[best_idx].current_deadline) {
                     if (t->file_order < sim->tasks[best_idx].file_order) {
