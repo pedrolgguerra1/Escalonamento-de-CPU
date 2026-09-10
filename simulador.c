@@ -21,6 +21,27 @@ static int choose_task_rate(SimulationData *sim) {
     return best_idx;
 }
 
+static int choose_task_edf(SimulationData *sim) {
+    int best_idx = -1;
+    for (int i = 0; i < sim->num_tasks; i++) {
+        Task *t = &sim->tasks[i];
+        if (t->is_active && t->remaining_burst > 0) {
+            if (best_idx == -1) {
+                best_idx = i;
+            } else {
+                if (t->current_deadline > sim->tasks[best_idx].current_deadline) {
+                    best_idx = i;
+                } else if (t->current_deadline == sim->tasks[best_idx].current_deadline) {
+                    if (t->file_order < sim->tasks[best_idx].file_order) {
+                        best_idx = i;
+                    }
+                }
+            }
+        }
+    }
+    return best_idx;
+}
+
 void run_simulation(SimulationData *sim, SchedAlgo algo, const char *login) {
     char out_filename[128];
     snprintf(out_filename, sizeof(out_filename), "%s_%s.out",
@@ -48,7 +69,7 @@ void run_simulation(SimulationData *sim, SchedAlgo algo, const char *login) {
             }
         }
 
-        int chosen = choose_task_rate(sim);
+        int chosen = (algo == ALGO_RATE) ? choose_task_rate(sim) : choose_task_edf(sim);
 
         if (chosen != current_running && current_block_duration > 0) {
             if (current_running == -1) {
